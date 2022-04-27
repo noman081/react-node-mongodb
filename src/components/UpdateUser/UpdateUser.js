@@ -1,7 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-const AddUser = () => {
+const UpdateUser = () => {
+    const { id } = useParams();
+    const [user, setUser] = useState({});
+    const url = `http://localhost:5000/user/${id}`;
+    useEffect(() => {
+        fetch(url)
+            .then(res => res.json())
+            .then(data => setUser(data));
+    }, []);
     const handleAddUser = event => {
         event.preventDefault();
         const name = event.target.name.value;
@@ -10,7 +18,7 @@ const AddUser = () => {
         console.log(name, email);
 
         fetch('http://localhost:5000/user', {
-            method: 'POST',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         })
@@ -22,18 +30,18 @@ const AddUser = () => {
     }
     return (
         <div>
-            <h1>Welcome to my OWN DATA</h1>
+            <Link to='/'>Home</Link>
+            <h1>Updating User {user.name}</h1>
             <form onSubmit={handleAddUser}>
                 <input type="text" name='name' placeholder='Name' required />
                 <br />
                 <input type="email" name='email' placeholder='Email' required />
                 <br />
-                <input type="submit" value="Add User" />
+                <input type="submit" value="Update User" />
             </form>
 
-            <Link to='/'>Go to Home</Link>
         </div>
     );
 };
 
-export default AddUser;
+export default UpdateUser;

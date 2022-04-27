@@ -1,39 +1,41 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const AddUser = () => {
-    const handleAddUser = event => {
+const AddAdmin = () => {
+    const handleAdmin = event => {
         event.preventDefault();
         const name = event.target.name.value;
         const email = event.target.email.value;
-        const user = { name, email };
-        console.log(name, email);
-
-        fetch('http://localhost:5000/user', {
+        const age = event.target.age.value;
+        console.log(name, email, age)
+        const admin = { name, email, age };
+        fetch('http://localhost:5000/admin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
+            body: JSON.stringify(admin)
         })
             .then(res => res.json())
             .then(data => {
-                console.log('Data-', data);
-                event.target.reset();
+                console.log(data);
             });
     }
     return (
         <div>
-            <h1>Welcome to my OWN DATA</h1>
-            <form onSubmit={handleAddUser}>
+            <h1>This is Admin</h1>
+            <form onSubmit={handleAdmin}>
                 <input type="text" name='name' placeholder='Name' required />
                 <br />
                 <input type="email" name='email' placeholder='Email' required />
                 <br />
-                <input type="submit" value="Add User" />
+                <input type="text" name='age' placeholder='Age' />
+                <br />
+                <input type="submit" value="Add Admin" />
             </form>
 
-            <Link to='/'>Go to Home</Link>
+            <br />
+            <Link to='/'>Home</Link>
         </div>
     );
 };
 
-export default AddUser;
+export default AddAdmin;
